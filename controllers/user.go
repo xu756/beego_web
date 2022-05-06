@@ -1,14 +1,15 @@
 package controllers
 
 import (
-	"crypto/md5"
+	"crypto/sha256"
+	"crypto/sha512"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"github.com/astaxie/beego/orm"
 	beego "github.com/beego/beego/v2/server/web"
 	"myweb/models"
 	"strconv"
+	"time"
 )
 
 type Login struct {
@@ -35,12 +36,11 @@ func (request *Login) Post() {
 		request.ServeJSON()
 		return
 	}
-	//使用md5加密
-	h := md5.New()
+	// 前端使用md5加密，这里使用sha256加密
+	//使用SHA256加密
+	h := sha256.New()
 	h.Write([]byte(user["password"]))
 	password := hex.EncodeToString(h.Sum(nil))
-	//判断密码是否正确
-	fmt.Println(password)
 	if userInfo.Password != password {
 		res["status"] = strconv.Itoa(400)
 		res["message"] = "密码错误"
@@ -48,6 +48,13 @@ func (request *Login) Post() {
 		request.ServeJSON()
 		return
 	}
+	h = sha512.New()
+	h.Write([]byte(user["password"] + user["username"] + time.Now().String()))
+	token := hex.EncodeToString(h.Sum(nil))
+	// 设置token
+	res["token"] = token
+	userInfo.Token = token
+	o.Update(&userInfo, "Token")
 	res["status"] = strconv.Itoa(200)
 	res["message"] = "登录成功"
 	request.Data["json"] = res

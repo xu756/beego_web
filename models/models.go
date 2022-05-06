@@ -14,7 +14,7 @@ type User struct {
 	Email    string    `orm:"size(50)"`                    //邮箱
 	Created  time.Time `orm:"auto_now_add;type(datetime)"` //创建时间
 	Updated  time.Time `orm:"auto_now;type(datetime)"`     //更新时间
-	Token    string    `orm:"size(128)"`                   //token
+	Token    string    `orm:"size(255)"`                   //token
 	//
 }
 
