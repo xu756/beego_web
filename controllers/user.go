@@ -36,8 +36,6 @@ func (request *Login) Post() {
 		request.ServeJSON()
 		return
 	}
-	// 前端使用md5加密，这里使用sha256加密
-	//使用SHA256加密
 	h := sha256.New()
 	h.Write([]byte(user["password"]))
 	password := hex.EncodeToString(h.Sum(nil))
@@ -55,6 +53,9 @@ func (request *Login) Post() {
 	res["token"] = token
 	userInfo.Token = token
 	o.Update(&userInfo, "Token")
+	//使用缓存
+	//beego.GlobalStorage.Set(token, userInfo, time.Hour*24)
+	// 返回结果
 	res["status"] = strconv.Itoa(200)
 	res["message"] = "登录成功"
 	request.Data["json"] = res
