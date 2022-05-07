@@ -23,7 +23,6 @@ func (request *Login) Post() {
 	json.Unmarshal(data, &user)
 	//返回设置
 	res := make(map[string]string)
-
 	o := orm.NewOrm()
 	var userInfo models.User
 	userInfo.Name = user["username"]
