@@ -7,6 +7,5 @@ import (
 )
 
 func main() {
-	beego.BConfig.Listen.Graceful = true // 开启graceful
 	beego.Run()
 }
