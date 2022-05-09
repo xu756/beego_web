@@ -5,6 +5,7 @@ import (
 	"crypto/sha512"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"github.com/astaxie/beego/orm"
 	beego "github.com/beego/beego/v2/server/web"
 	"myweb/models"
@@ -21,6 +22,7 @@ func (request *Login) Post() {
 	user := make(map[string]string)
 	data := request.Ctx.Input.RequestBody
 	json.Unmarshal(data, &user)
+	fmt.Println(user)
 	//返回设置
 	res := make(map[string]string)
 	o := orm.NewOrm()
@@ -29,7 +31,7 @@ func (request *Login) Post() {
 	userInfo.Password = user["password"]
 	err := o.Read(&userInfo, "Name")
 	if err != nil {
-		res["status"] = strconv.Itoa(300)
+		res["code"] = strconv.Itoa(300)
 		res["message"] = "用户不存在"
 		request.Data["json"] = res
 		request.ServeJSON()
@@ -39,7 +41,7 @@ func (request *Login) Post() {
 	h.Write([]byte(user["password"]))
 	password := hex.EncodeToString(h.Sum(nil))
 	if userInfo.Password != password {
-		res["status"] = strconv.Itoa(400)
+		res["code"] = strconv.Itoa(400)
 		res["message"] = "密码错误"
 		request.Data["json"] = res
 		request.ServeJSON()
@@ -55,7 +57,7 @@ func (request *Login) Post() {
 	//使用缓存
 	//beego.GlobalStorage.Set(token, userInfo, time.Hour*24)
 	// 返回结果
-	res["status"] = strconv.Itoa(200)
+	res["code"] = strconv.Itoa(200)
 	res["message"] = "登录成功"
 	request.Data["json"] = res
 	request.ServeJSON()
