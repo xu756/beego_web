@@ -61,3 +61,8 @@ func (request *Login) Post() {
 	request.ServeJSON()
 	return
 }
+
+type Userinfo struct {
+	beego.Controller
+	token string
+}
