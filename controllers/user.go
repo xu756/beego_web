@@ -5,7 +5,6 @@ import (
 	"crypto/sha512"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"github.com/astaxie/beego/orm"
 	beego "github.com/beego/beego/v2/server/web"
 	"myweb/models"
@@ -22,7 +21,6 @@ func (request *Login) Post() {
 	user := make(map[string]string)
 	data := request.Ctx.Input.RequestBody
 	json.Unmarshal(data, &user)
-	fmt.Println(user)
 	//返回设置
 	res := make(map[string]string)
 	o := orm.NewOrm()
