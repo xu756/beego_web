@@ -8,5 +8,5 @@ import (
 func init() {
 	beego.Router("/", &controllers.Index{})
 	beego.Router("/api/login", &controllers.Login{})
-	beego.Router("/api/userinfo?token=:token", &controllers.Userinfo{})
+	beego.Router("/api/userinfo/user=:token:string", &controllers.Userinfo{})
 }

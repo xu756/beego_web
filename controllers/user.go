@@ -66,3 +66,24 @@ type Userinfo struct {
 	beego.Controller
 	token string
 }
+
+// Post 获取用户信息
+func (request *Userinfo) Post() {
+	// 获取token
+	token := request.Ctx.Input.Param(":token")
+	if token == "" {
+		request.Data["json"] = map[string]string{"code": "300", "message": "token不能为空"}
+		request.ServeJSON()
+	}
+	// 获取用户信息
+	o := orm.NewOrm()
+	var userInfo models.User
+	userInfo.Token = token
+	err := o.Read(&userInfo, "Token")
+	if err != nil {
+		request.Data["json"] = map[string]string{"code": "300", "message": "token不存在"}
+		request.ServeJSON()
+	}
+	request.Data["json"] = map[string]interface{}{"code": "200", "message": "获取成功", "userinfo": userInfo}
+	request.ServeJSON()
+}

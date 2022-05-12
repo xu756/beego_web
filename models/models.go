@@ -22,7 +22,6 @@ type User struct {
 func init() {
 	orm.RegisterDataBase("default", "mysql", "xu:xjx756756@tcp(121.5.132.57:5700)/Beego_db?charset=utf8&loc=Local", 30)
 	orm.RegisterModel(new(User)) //注册表
-
-	orm.Debug = false
+	orm.Debug = true
 	orm.RunSyncdb("default", false, false) //同步数据库
 }
