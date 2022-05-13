@@ -104,6 +104,6 @@ func (request *Userinfo) Get() {
 		request.Data["json"] = map[string]string{"code": "300", "message": "请重新登录"}
 		request.ServeJSON()
 	}
-	request.Data["json"] = map[string]interface{}{"code": "200", "message": "是本人登录"}
+	request.Data["json"] = map[string]string{"code": "200", "message": "是本人登录"}
 	request.ServeJSON()
 }
