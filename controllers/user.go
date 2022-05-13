@@ -87,3 +87,23 @@ func (request *Userinfo) Post() {
 	request.Data["json"] = map[string]interface{}{"code": "200", "message": "获取成功", "userinfo": userInfo}
 	request.ServeJSON()
 }
+
+// Get 判断用户是否本人
+func (request *Userinfo) Get() {
+	// 获取token
+	token := request.Ctx.Input.Param(":token")
+	if token == "" {
+		request.Data["json"] = map[string]string{"code": "300", "message": "请重新登录"}
+		request.ServeJSON()
+	}
+	o := orm.NewOrm()
+	var userInfo models.User
+	userInfo.Token = token
+	err := o.Read(&userInfo, "Token")
+	if err != nil {
+		request.Data["json"] = map[string]string{"code": "300", "message": "请重新登录"}
+		request.ServeJSON()
+	}
+	request.Data["json"] = map[string]interface{}{"code": "200", "message": "是本人登录"}
+	request.ServeJSON()
+}
