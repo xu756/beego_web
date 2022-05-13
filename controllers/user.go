@@ -52,7 +52,7 @@ func (request *Login) Post() {
 	res["token"] = token
 	userInfo.Token = token
 	o.Update(&userInfo, "Token")
-	//使用缓存
+	//todo: 设置缓存
 	//beego.GlobalStorage.Set(token, userInfo, time.Hour*24)
 	// 返回结果
 	res["code"] = strconv.Itoa(200)
